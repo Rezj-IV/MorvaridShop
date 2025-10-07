@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import Color from "../../../../components/ui/Color";
+import Color, { mainColor } from "../../../../components/ui/Color";
 import axios from "axios";
 
 function singlePrd(props) {
@@ -37,11 +37,11 @@ function singlePrd(props) {
   //   latitudeDelta: 0.0922,
   //   longitudeDelta: 0.0421,
   // };
-    const locate = {
-    latitude:35.76901993748633,
+  const locate = {
+    latitude: 35.76901993748633,
     longitude: 51.2878031776673,
-    latitudeDelta: 0.050,
-    longitudeDelta: 0.050,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
   };
   return (
     <>
@@ -57,9 +57,9 @@ function singlePrd(props) {
           <View style={styles.prdContent}>
             <Text style={styles.name}>{product.name}</Text>
             <View style={styles.priceContainer}>
-              <Text style={[Color.primaryColor, styles.toman]}>ت </Text>
+              <Text style={[styles.toman]}>ت </Text>
 
-              <Text style={[Color.primaryColor, styles.price]}>
+              <Text style={[styles.price]}>
                 {product.price}
                 {/* {product.price
                   .toString()
@@ -77,13 +77,13 @@ function singlePrd(props) {
             <Text style={styles.username}>{product.seller}</Text>
           </View>
 
-          <View style={[styles.notification, styles.wh]}>
+          <View style={[styles.notification, styles.measurement]}>
             <Text style={styles.notificationText}>
               آیا این کالا هنوز موجوده ؟
             </Text>
           </View>
           <TouchableOpacity>
-            <View style={[styles.wh, Color.primaryBgColor]}>
+            <View style={[styles.measurement, styles.sendToSeller]}>
               <Text style={styles.sendToSellerText}>ارسال به فروشنده</Text>
             </View>
           </TouchableOpacity>
@@ -97,7 +97,6 @@ function singlePrd(props) {
                 }}
                 style={{ height: 38, width: 38 }}
               />
-
             </Marker>
           </MapView>
         </View>
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 270,
+    height: 280,
   },
   prdContent: {
     width: "100%",
@@ -135,6 +134,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 15,
+    color: mainColor,
     fontWeight: "600",
     fontFamily: "cursive",
   },
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontStyle: "italic",
     fontSize: 12,
+    color: mainColor,
     fontFamily: "cursive",
   },
   userContent: {
@@ -164,9 +165,9 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     width: "100%",
-    height: 200,
+    height: 195,
   },
-  wh: {
+  measurement: {
     width: "100%",
     height: 50,
     borderRadius: 40,
@@ -179,6 +180,9 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   notificationText: { fontSize: 15.5, paddingRight: 20 },
+  sendToSeller: {
+    backgroundColor: mainColor,
+  },
   sendToSellerText: {
     color: "white",
     fontWeight: "600",
@@ -188,66 +192,3 @@ const styles = StyleSheet.create({
 });
 
 export default singlePrd;
-  //  <>
-  //     <Stack.Screen options={{ headerShown: false }} />
-  //     <View style={styles.container}>
-  //       <Image
-  //         style={styles.image}
-  //         source={{
-  //           uri: product.indexImageUrl,
-  //         }}
-  //       />
-  //       <View style={{ paddingHorizontal: 15 }}>
-  //         <View style={styles.prdContent}>
-  //           <Text style={styles.name}>{product.name}</Text>
-  //           <View style={styles.priceContainer}>
-  //             <Text style={[Color.primaryColor, styles.toman]}>ت </Text>
-
-  //             <Text style={[Color.primaryColor, styles.price]}>
-  //               {product.price}
-  //               {/* {product.price
-  //                 .toString()
-  //                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-  //             </Text>
-  //           </View>
-  //         </View>
-  //         <View style={styles.userContent}>
-  //           <Image
-  //             style={styles.userImage}
-  //             source={{
-  //               uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_aUr2fM-NatBKX-c2aYXozBgcLJZ7eCDDlb76vQbn06IPE-SZLgddap3aTQJsbElKZjA&usqp=CAU",
-  //             }}
-  //           />
-  //           <Text style={styles.username}>{product.seller}</Text>
-  //         </View>
-
-  //         <View style={[styles.notification, styles.wh]}>
-  //           <Text style={styles.notificationText}>
-  //             آیا این کالا هنوز موجوده ؟
-  //           </Text>
-  //         </View>
-  //         <TouchableHighlight>
-  //           <View style={[styles.wh, Color.primaryBgColor]}>
-  //             <Text style={styles.sendToSellerText}>ارسال به فروشنده</Text>
-  //           </View>
-  //         </TouchableHighlight>
-  //       </View>
-  //       <View style={styles.locationContainer}>
-  //         <MapView style={StyleSheet.absoluteFill} initialRegion={locate}>
-  //           <Marker coordinate={locate} key={new Date()}>
-  //             <Image
-  //               source={{
-  //                 uri: "https://img.icons8.com/?size=80&id=XieTOK4V0QEI&format=png",
-  //               }}
-  //               style={{ height: 38, width: 38 }}
-  //             />
-  //             <Callout>
-  //               <View style={{ padding: 10 }}>
-  //                 <Text style={{ fontSize: 16 }}>فروشنده</Text>
-  //               </View>
-  //             </Callout>
-  //           </Marker>
-  //         </MapView>
-  //       </View>
-  //     </View>
-  //   </>

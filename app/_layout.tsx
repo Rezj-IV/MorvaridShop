@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useState } from 'react';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -16,12 +17,15 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
-
+  let loggedIn = false
   return (
     <>
       {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {loggedIn ?
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> :
+          <Stack.Screen name="(welcome)" options={{ headerShown: false }} />
+        }
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

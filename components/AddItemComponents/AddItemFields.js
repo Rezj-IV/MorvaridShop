@@ -15,6 +15,7 @@ import Foundation from "@expo/vector-icons/Foundation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useFonts } from "expo-font";
+import { mainColor } from "../ui/Color";
 function AddItemFields(props) {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
 
   registerButton: {
     borderRadius: 27,
-    backgroundColor: "#F75057",
+    backgroundColor: mainColor,
     alignItems: "center",
     justifyContent: "center",
     height: 49,
