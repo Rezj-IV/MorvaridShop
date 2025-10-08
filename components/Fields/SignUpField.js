@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Image, Text , View } from "react-native";
+import { Button, Image, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { mainColor } from "../../components/ui/Color";
-import { FieldStyles } from "../../components/Fields/FieldStyles";
-function Login(props) {
+import { FieldStyles } from "./FieldStyles";
+function SignUpField(props) {
   const navigatiuon = useNavigation();
 
   const onSubmit = (values) => {
@@ -22,11 +22,27 @@ function Login(props) {
   const initialValues = {
     username: "",
     password: "",
+    confirmPassword: "",
+    email: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("نام کاربری خود را وارد کنید"),
-    password: Yup.string().required("رمز عبور خود را وارد کنید"),
+    username: Yup.string()
+      .min(4, "باید حداقل شامل چهار کارکتر باشد")
+      .required("نام کاربری خود را وارد کنید"),
+    password: Yup.string()
+      .min(6, "باید حداقل شامل شش کارکتر باشد")
+      .matches(
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+        " باید حداقل یک حروف کوچک و بزرگ , یک عدد و کارکتر خاص داشته باشد"
+      )
+      .required("رمز عبور خود را وارد کنید"),
+    confirmPassword: Yup.string()
+      .min(6, "باید حداقل شامل شش کارکتر باشد")
+      .oneOf([Yup.ref("password")], "رمز عبور مطابقت  ندارد"),
+    email: Yup.string()
+      .email("فرمت پست الکترونیکی اشتباه است")
+      .required("پست الکترونیکی خود را وارد کنید"),
   });
 
   return (
@@ -47,8 +63,8 @@ function Login(props) {
           source={require("../../assets/images/waves1.png")}
         >
           <View style={FieldStyles.titleContainer}>
-            <Text style={FieldStyles.title}>ورود</Text>
-            <Text style={{}}>به حساب خود وارد شوید .</Text>
+            <Text style={FieldStyles.title}>ثبت نام</Text>
+            <Text style={{}}>حساب خود را بسازید.</Text>
           </View>
         </ImageBackground>
       </View>
@@ -57,6 +73,7 @@ function Login(props) {
           validationSchema={validationSchema}
           initialValues={initialValues}
           onSubmit={onSubmit}
+          // onSubmit={values=>Alert.alert(JSON.stringify(values))}
         >
           {({
             values,
@@ -102,6 +119,35 @@ function Login(props) {
                     </Text>
                   )}
                 </View>
+
+                <View style={FieldStyles.inputChild}>
+                  <Text style={FieldStyles.label}> تایید رمز عبور </Text>
+                  <TextInput
+                    style={FieldStyles.input}
+                    placeholder="لطفا رمز عبور خود را تایید کنید"
+                    placeholderTextColor="#ccccccff"
+                    value={values.confirmPassword}
+                    onChangeText={handleChange("confirmPassword")}
+                  />
+                  {errors.confirmPassword && (
+                    <Text style={FieldStyles.errorMessage}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
+                <View style={FieldStyles.inputChild}>
+                  <Text style={FieldStyles.label}>پست الکترونیکی</Text>
+                  <TextInput
+                    style={FieldStyles.input}
+                    placeholder="لطفا پست الکترونیکی خود را تایید کنید"
+                    placeholderTextColor="#ccccccff"
+                    value={values.email}
+                    onChangeText={handleChange("email")}
+                  />
+                  {errors.email && (
+                    <Text style={FieldStyles.errorMessage}>{errors.email}</Text>
+                  )}
+                </View>
               </View>
               <View>
                 <TouchableOpacity
@@ -111,14 +157,14 @@ function Login(props) {
                   ]}
                   onPress={handleSubmit}
                 >
-                  <Text style={FieldStyles.loginButtontext}>ورود</Text>
+                  <Text style={FieldStyles.loginButtontext}>ثبت نام</Text>
                 </TouchableOpacity>
                 <View style={FieldStyles.goSignUp}>
-                  <Text>در صورت نداشتن حساب</Text>
-                  <Link href="/Register" style={FieldStyles.linkSignUp}>
-                    ثبت نام
+                  <Text>در صورت داشتن حساب</Text>
+                  <Link href="/Login" style={FieldStyles.linkSignUp}>
+                   وارد
                   </Link>
-                  <Text>کنید</Text>
+                  <Text>شوید</Text>
                 </View>
               </View>
             </View>
@@ -129,4 +175,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default SignUpField;
