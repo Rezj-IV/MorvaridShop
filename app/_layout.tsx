@@ -17,7 +17,7 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
-  let loggedIn = false
+  let loggedIn = true
   return (
     <>
       {/* // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}

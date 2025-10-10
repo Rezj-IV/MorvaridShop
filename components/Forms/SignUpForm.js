@@ -11,9 +11,9 @@ import { Button, Image, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { mainColor } from "../../components/ui/Color";
+import { mainColor } from "../ui/Color";
 import { FieldStyles } from "./FieldStyles";
-function SignUpField(props) {
+function SignUpForm(props) {
   const navigatiuon = useNavigation();
 
   const onSubmit = (values) => {
@@ -83,6 +83,7 @@ function SignUpField(props) {
             setFieldTouched,
             handleSubmit,
             handleChange,
+          
           }) => (
             <View style={FieldStyles.inputContainer}>
               <View>
@@ -175,4 +176,4 @@ function SignUpField(props) {
   );
 }
 
-export default SignUpField;
+export default SignUpForm;

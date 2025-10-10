@@ -20,7 +20,7 @@ function singlePrd(props) {
 
   const getProduct = async () => {
     const response = await axios.get(
-      `http://10.204.1.23:9095/MorvaridShop/${singlePrd}`
+      `http://10.158.9.23:9095/MorvaridShop/${singlePrd}`
     );
     const data = await response.data;
 

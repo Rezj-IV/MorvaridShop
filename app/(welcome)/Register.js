@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import SignUpField from "../../components/Fields/SignUpField";
+import SignUpForm from "../../components/Forms/SignUpForm";
 
 function Register(props) {
-  return <SignUpField />;
+  return <SignUpForm />;
 }
 
 const styles = StyleSheet.create({

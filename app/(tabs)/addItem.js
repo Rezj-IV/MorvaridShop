@@ -4,21 +4,22 @@ import ImageInputList from "../../components/AddItemComponents/ImageInputList";
 import AddItemFields from "../../components/AddItemComponents/AddItemFields";
 
 const addItem = () => {
-  const [imageUris, setImageUris] = useState([]);
-  const handleAdd = (uri) => {
-    setImageUris([...imageUris, uri]);
-  };
-  const handleRemove = (uri) => {
-    setImageUris(imageUris.filter((image) => image !== uri));
-  };
+  // const [imageUris, setImageUris] = useState([]);
+  // const handleAdd = (uri) => {
+  //   setImageUris([...imageUris, uri]);
+  // };
+  // const handleRemove = (uri) => {
+  //   setImageUris(imageUris.filter((image) => image !== uri));
+  // };
   return (
     <View style={styles.addItemContainer}>
       <Text style={styles.header}>کالا جدید</Text>
-      <ImageInputList
+      {/* <ImageInputList
         imageUris={imageUris}
         addImage={handleAdd}
         removeImage={handleRemove}
-      />
+      /> */}
+      
       <AddItemFields />
     </View>
   );

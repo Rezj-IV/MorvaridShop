@@ -9,7 +9,7 @@ const Products = ({ Category }) => {
   const navigation = useNavigation();
   const getProducts = async () => {
     const ip = await Network.getIpAddressAsync();
-    const response = await axios.get(`http://10.204.1.23:9095/MorvaridShop`);
+    const response = await axios.get(`http://10.158.9.23:9095/MorvaridShop`);
     const data = await response.data;
     console.log(ip);
     setProducts(data);
