@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     backgroundColor: "#f7f7f7ff",
     flex: 1,
+    direction:"rtl"
   },
 });
 

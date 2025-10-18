@@ -17,7 +17,31 @@ function SignUpForm(props) {
   const navigatiuon = useNavigation();
 
   const onSubmit = (values) => {
-    Alert.alert(JSON.stringify(values));
+    fetch("http://194.60.231.181:9095/users/register", {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+
+      .then((data) => {
+        console.log("success", data);
+        Alert.alert(
+          "ثبت نام با موفقیت انجام شد",
+          " و حالا بایستی به حساب خود وارد شوید.",
+          [
+            {
+              text: "ورود به حساب",
+              onPress: () => {
+                navigatiuon.navigate("Login");
+              },
+            },
+          ]
+        );
+      })
+      .catch((error) => console.log(error));
   };
   const initialValues = {
     username: "",
@@ -28,7 +52,7 @@ function SignUpForm(props) {
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .min(4, "باید حداقل شامل چهار کارکتر باشد")
+      .min(3, "باید حداقل شامل سه کارکتر باشد")
       .required("نام کاربری خود را وارد کنید"),
     password: Yup.string()
       .min(6, "باید حداقل شامل شش کارکتر باشد")
@@ -83,7 +107,6 @@ function SignUpForm(props) {
             setFieldTouched,
             handleSubmit,
             handleChange,
-          
           }) => (
             <View style={FieldStyles.inputContainer}>
               <View>
@@ -163,7 +186,7 @@ function SignUpForm(props) {
                 <View style={FieldStyles.goSignUp}>
                   <Text>در صورت داشتن حساب</Text>
                   <Link href="/Login" style={FieldStyles.linkSignUp}>
-                   وارد
+                    وارد
                   </Link>
                   <Text>شوید</Text>
                 </View>

@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -8,6 +8,7 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import Color, { mainColor } from "../../../../components/ui/Color";
@@ -30,19 +31,20 @@ function singlePrd(props) {
   useEffect(() => {
     getProduct();
   }, []);
+  console.log("latitude", product.latitude);
+  const locate = {
+    latitude: Number(product.latitude),
+    longitude: Number(product.longitude),
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
 
   // const locate = {
-  //   latitude: product.latitude,
-  //   longitude: product.longitude,
+  //   latitude: 35.68982981668057,
+  //   longitude: 50.84257936409913,
   //   latitudeDelta: 0.0922,
   //   longitudeDelta: 0.0421,
   // };
-  const locate = {
-    latitude: 35.76901993748633,
-    longitude: 51.2878031776673,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
-  };
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -57,64 +59,54 @@ function singlePrd(props) {
           <View style={styles.prdContent}>
             <Text style={styles.name}>{product.name}</Text>
             <View style={styles.priceContainer}>
+              <Text style={[styles.price]}>{product.price}</Text>
               <Text style={[styles.toman]}>ت </Text>
-
-              <Text style={[styles.price]}>
-                {product.price}
-                {/* {product.price
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-              </Text>
             </View>
           </View>
+
           <View style={styles.userContent}>
             <Image
               style={styles.userImage}
               source={{
-                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_aUr2fM-NatBKX-c2aYXozBgcLJZ7eCDDlb76vQbn06IPE-SZLgddap3aTQJsbElKZjA&usqp=CAU",
+                uri: "https://static.vecteezy.com/system/resources/thumbnails/048/926/084/small_2x/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-illustration-vector.jpg",
               }}
             />
             <Text style={styles.username}>{product.seller}</Text>
           </View>
 
-          <View style={[styles.notification, styles.measurement]}>
-            <Text style={styles.notificationText}>
-              آیا این کالا هنوز موجوده ؟
-            </Text>
-          </View>
-          <TouchableOpacity>
+          <TextInput style={[styles.notification, styles.measurement]} placeholder="پیام شما به فروشنده"/>
+           
+          <TouchableOpacity onPress={{}}>
             <View style={[styles.measurement, styles.sendToSeller]}>
               <Text style={styles.sendToSellerText}>ارسال به فروشنده</Text>
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.locationContainer}>
-          <MapView style={StyleSheet.absoluteFill} initialRegion={locate}>
-            <Marker coordinate={locate} key={product.id}>
-              <Image
-                source={{
-                  uri: "https://img.icons8.com/?size=80&id=XieTOK4V0QEI&format=png",
-                }}
-                style={{ height: 38, width: 38 }}
-              />
-            </Marker>
-          </MapView>
-        </View>
+        {product && (
+          <View style={styles.locationContainer}>
+            <MapView style={StyleSheet.absoluteFill} initialRegion={locate}>
+              <Marker coordinate={locate} key={product.id}>
+                <Image
+                  source={{
+                    uri: "https://img.icons8.com/?size=80&id=XieTOK4V0QEI&format=png",
+                  }}
+                  style={{ height: 38, width: 38 }}
+                />
+              </Marker>
+            </MapView>
+          </View>
+        )}
       </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    backgroundColor: "#f7f7f7ff",
-    alignItems: "center",
-    flex: 1,
-  },
   container: {
     flex: 1,
     width: "100%",
     justifyContent: "space-between",
+    direction: "rtl",
   },
   image: {
     width: "100%",
@@ -159,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   username: {
-    paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -177,9 +169,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#e9e9e9ff",
     marginTop: 10,
     marginBottom: 16,
-    alignItems: "flex-end",
+    paddingHorizontal:20
   },
-  notificationText: { fontSize: 15.5, paddingRight: 20 },
+
   sendToSeller: {
     backgroundColor: mainColor,
   },

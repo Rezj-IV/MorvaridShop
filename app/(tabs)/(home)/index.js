@@ -3,14 +3,10 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  TouchableWithoutFeedback,
 } from "react-native";
 
 import Content from "../../../components/HomeComponents/Content";
-import Products from "../../../components/HomeComponents/Products";
+
 ;
 export default function HomeScreen() {
 

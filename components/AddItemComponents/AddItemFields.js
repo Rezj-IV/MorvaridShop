@@ -1,140 +1,134 @@
-import { hide } from "expo-splash-screen";
-import React, { useState } from "react";
-import { Alert, Button, Pressable } from "react-native";
+import Foundation from "@expo/vector-icons/Foundation";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Formik } from "formik";
+import { useState } from "react";
 import {
-  View,
+  Modal,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
+  ToastAndroid,
   TouchableOpacity,
-  Modal,
-  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import Foundation from "@expo/vector-icons/Foundation";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Entypo from "@expo/vector-icons/Entypo";
-import { useFonts } from "expo-font";
-import { mainColor } from "../ui/Color";
-import { Formik } from "formik";
 import * as Yup from "yup";
-import FormImagesPicker from "../Forms/FormImagesPicker";
+import { mainColor } from "../ui/Color";
+import FormImagesPicker from "./FormImagesPicker";
+import CategoryModal from "./CategoryModal";
+import Lottie from "../HomeComponents/Lottie";
 function AddItemFields(props) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showAnimation, setshowAnimation] = useState(false);
+  
+  const showToast = () => {
+    ToastAndroid.show(" کالا شما با موفقیت ثبت شد", ToastAndroid.SHORT);
+  };
 
-  const onSubmit = () => {};
-  const initialValues = { name: "", price: "", images: [], category: {} };
+  const onSubmit = (values) => {
+    setshowAnimation(true);
+  
+    setTimeout(() => {
+      setshowAnimation(false);
+    }, 3650);
+    showToast();
+    
+  };
+
+  const initialValues = {
+    name: "",
+    price: "",
+    images: [],
+    category: "",
+  };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(6, "باید حداقل شامل شش کارکتر باشد")
       .required("نام کالا را وارد کنید"),
-    price: Yup.number()
+    price: Yup.string()
       .min(4, "باید حداقل شامل چهار رقم باشد")
       .required("قیمت کالا را وارد کنید"),
     images: Yup.array().min(1, "باید حداقل یک تصویر را آپلود کنید"),
-
-    category: Yup.string().required("یکی از دسته ها را انتخاب کن"),
+    category: Yup.string().required("لطفا یکی از دسته ها را انتخاب کنید"),
   });
-  // console.log("images",initialValues.images);
   return (
-    <>
-      <View style={{ marginTop: 30 }}>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          {({
-            values,
-            touched,
-            errors,
-            isValid,
-            handleChange,
-            handleSubmit,
-            setFieldTouched,
-          }) => (
-            <View>
-              <FormImagesPicker name="images" />
+    <View>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {({
+          values,
+          touched,
+          errors,
+          isValid,
+          handleChange,
+          handleSubmit,
+          setFieldTouched,
+          setFieldValue,
+        }) => (
+          <View style={{ gap: 20 }}>
+            <FormImagesPicker name="images" />
 
-              <View style={[styles.inputContainer, { marginTop: 50 }]}>
-                <MaterialIcons
-                  name="drive-file-rename-outline"
-                  size={23}
-                  color="#D0CECE"
-                  style={styles.icon_tag}
-                />
-                <TextInput
-                  style={[styles.input, styles.name_input]}
-                  placeholderTextColor="#939192"
-                  placeholder="نام"
-                  value={values.name}
-                  onBlur={() => setFieldTouched("name")}
-                  onChangeText={handleChange("name")}
-                />
-                {errors.name && touched.name && <Text>{errors.name}</Text>}
-              </View>
-              <View style={styles.inputContainer}>
-                <Foundation
-                  name="price-tag"
-                  size={23}
-                  color="#D0CECE"
-                  style={styles.icon_tag}
-                />
-                <TextInput
-                  style={[styles.input, styles.price_input]}
-                  placeholderTextColor="#939192"
-                  placeholder="قیمت"
-                  keyboardType="number-pad"
-                  value={values.price}
-                  onBlur={() => setFieldTouched("price")}
-                  onChangeText={handleChange("price")}
-                />
-                {touched.price && errors.price && <Text>{errors.price}</Text>}
-              </View>
-
-              <TouchableOpacity
-                onPress={handleSubmit}
-                style={styles.registerButton}
-              >
-                <Text style={styles.textRegister}>ثبت</Text>
-              </TouchableOpacity>
+            <View style={[styles.inputContainer]}>
+              <MaterialIcons
+                name="drive-file-rename-outline"
+                size={23}
+                color="#D0CECE"
+                style={styles.icon_tag}
+              />
+              <TextInput
+                style={[styles.input, styles.name_input]}
+                placeholderTextColor="#939192"
+                placeholder="نام"
+                value={values.name}
+                onBlur={() => setFieldTouched("name")}
+                onChangeText={handleChange("name")}
+              />
+              {errors.name && touched.name && (
+                <Text style={styles.errorMessage}>{errors.name}</Text>
+              )}
             </View>
-          )}
-        </Formik>
-        <Pressable
-          style={[styles.input, styles.showCategoryModalBtn]}
-          onPress={() => setModalVisible(!modalVisible)}
-        >
-          <MaterialIcons
-            name="category"
-            size={23}
-            color="#D0CECE"
-            style={styles.icon_tag}
-          />
-          <Text style={styles.showCategoryModal_Text}>دسته بندی</Text>
-          <Entypo
-            name="chevron-small-down"
-            size={20}
-            color="#D0CECE"
-            style={styles.icon_down}
-          />
-        </Pressable>
-        <Modal
-          style={{ height: 700, width: "100%" }}
-          animationType="slide"
-          visible={modalVisible}
-          transparent
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.categoryModalContainer}>
-            <View style={styles.categoryModal}></View>
+            <View style={styles.inputContainer}>
+              <Foundation
+                name="price-tag"
+                size={23}
+                color="#D0CECE"
+                style={styles.icon_tag}
+              />
+              <TextInput
+                style={[styles.input, styles.price_input]}
+                placeholderTextColor="#939192"
+                placeholder="قیمت"
+                keyboardType="number-pad"
+                value={values.price}
+                onBlur={() => setFieldTouched("price")}
+                onChangeText={handleChange("price")}
+              />
+              {touched.price && errors.price && (
+                <Text style={styles.errorMessage}>{errors.price}</Text>
+              )}
+            </View>
+            {/* categoryModal ro import kon dar inja <CategoryModal name="category"/> */}
+            <CategoryModal name="category" />
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={[
+                styles.registerButton,
+                { backgroundColor: isValid ? mainColor : "#5f96e8b7" },
+              ]}
+            >
+              <Text style={styles.textRegister}>ثبت</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      </View>
-    </>
+        )}
+      </Formik>
+      <Modal visible={showAnimation}>
+        <Lottie />
+      </Modal>
+    </View>
   );
 }
 
@@ -143,12 +137,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#edededff",
     height: 48,
     borderRadius: 25,
-    marginBottom: 20,
     paddingLeft: 0,
     paddingTop: 10,
     paddingRight: 40,
     fontSize: 15,
-
+    color: "#575757ff",
     fontWeight: "bold",
   },
   price_input: {
@@ -158,7 +151,6 @@ const styles = StyleSheet.create({
 
   registerButton: {
     borderRadius: 27,
-    backgroundColor: mainColor,
     alignItems: "center",
     justifyContent: "center",
     height: 49,
@@ -168,27 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
   },
-  showCategoryModalBtn: {
-    width: "44%",
-    paddingTop: 10,
-    paddingRight: 20,
-    position: "relative",
-  },
-  showCategoryModal_Text: {
-    color: "#939192",
-    paddingRight: 22,
-    fontSize: 15,
-    fontWeight: "bold",
-  },
-  categoryModalContainer: {
-    backgroundColor: "#00000057",
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  categoryModal: {
-    height: "60%",
-    backgroundColor: "white",
-  },
+
   inputContainer: {
     position: "relative",
   },
@@ -202,6 +174,16 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 13,
     left: 10,
+  },
+  errorMessage: {
+    color: "red",
+    paddingTop: 5,
+    paddingRight: 8,
+  },
+  animationContainer: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "red",
   },
 });
 

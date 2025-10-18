@@ -1,8 +1,21 @@
-import { Link } from "expo-router";
-import React from "react";
-import { View, StyleSheet, StatusBar, Text, Image } from "react-native";
+import { Link, useNavigation } from "expo-router";
+import React, { useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
+import { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 export default function AccountContent() {
+  const navigation = useNavigation();
   const DATA = [
     {
       id: 1,
@@ -17,38 +30,78 @@ export default function AccountContent() {
       name: "پیام های من",
     },
   ];
+  const LogOut = () => {
+    Alert.alert("خروج از حساب", "آیا مطمئنی که میخوای از حساب خارج شوید.", [
+      {
+        text: "بله",
+        onPress: () => {
+          AsyncStorage.removeItem("jwtToken");
+          navigation.navigate("(welcome)");
+        },
+      },
+      { text: "خیر" },
+    ]);
+  };
+  
+  const [jwtData, setJwtData] = useState();
 
+  const getToken = async () => {
+    const jwt = await AsyncStorage.getItem("jwtToken");
+    if (jwt) {
+      setJwtData({
+        seller: jwtDecode(jwt).username,
+        email: jwtDecode(jwt).email,
+      });
+    }
+    console.log("jwt", jwtData);
+  };
+  useEffect(() => {
+    getToken();
+  }, []);
+  // console.log("jwt+> ", jwtData.seller);
+  // console.log("jwt=> ", JSON.stringify(jwtData));
   return (
     <>
       <View style={styles.userContainer}>
         <Image
           source={{
-            uri: "https://img.icons8.com/?size=80&id=65342&format=png",
+            uri: "https://cdn-icons-png.freepik.com/256/12808/12808894.png?semt=ais_white_label",
           }}
           style={styles.userImage}
         />
-
-        <View>
-          <Text style={styles.username}>Mosh</Text>
-          <Text style={styles.email}>rezj.iv@gmail.com</Text>
-        </View>
+        {jwtData && (
+          <View style={styles.userInfo}>
+            <Text style={styles.username}>{jwtData.seller}</Text>
+            <Text style={styles.email}>{jwtData.email}</Text>
+          </View>
+        )}
       </View>
-      {DATA.map((item) => {
-        return (
-          <Link href={`/${item.link}`} key={item.id}>
-            <View style={styles.list_message_container}>
-              <View style={styles.content}>
-                <Image source={{ uri: item.image }} style={styles.image} />
-                <Text style={styles.text}> {item.name}</Text>
-              </View>
-              <View style={styles.content}>
-                <Entypo name="chevron-right" size={20} color="gray" />
-              </View>
-            </View>
-          </Link>
-        );
-      })}
-      <View style={[styles.list_message_container, styles.logoutContainer]}>
+      {jwtData && (
+        <>
+          {DATA.map((item) => {
+            return (
+              <Link
+                href={`/${item.link}?seller=${jwtData.seller}`}
+                key={item.id}
+              >
+                <View style={styles.list_message_container}>
+                  <View style={styles.content}>
+                    <Image source={{ uri: item.image }} style={styles.image} />
+                    <Text style={styles.text}> {item.name}</Text>
+                  </View>
+                  <View style={styles.content}>
+                    <Entypo name="chevron-left" size={20} color="gray" />
+                  </View>
+                </View>
+              </Link>
+            );
+          })}
+        </>
+      )}
+      <TouchableOpacity
+        onPress={LogOut}
+        style={[styles.list_message_container, styles.logoutContainer]}
+      >
         <View style={styles.content}>
           <Image
             source={{
@@ -58,17 +111,16 @@ export default function AccountContent() {
           />
           <Text style={styles.text}> خروج از حساب</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-
   userContainer: {
     flexDirection: "row",
     width: "100%",
-    height: "auto",
+    height: "13%",
     backgroundColor: "#fefefeff",
     marginBottom: 40,
     padding: 15,
@@ -76,7 +128,11 @@ const styles = StyleSheet.create({
   userImage: {
     width: 73,
     height: 73,
-    marginRight: 10,
+    marginLeft: 10,
+  },
+  userInfo:{
+    height:"100%",
+    justifyContent:"center"
   },
   username: {
     fontSize: 17,
@@ -103,11 +159,12 @@ const styles = StyleSheet.create({
   image: {
     width: 35,
     height: 35,
-    marginRight: 10,
+  
   },
   text: {
     fontSize: 14,
     fontWeight: "bold",
+    paddingHorizontal:10
   },
 
   logoutContainer: {

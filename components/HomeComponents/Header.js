@@ -27,6 +27,14 @@ function Header({ category, setCategory }) {
       id: 4,
       category: "لوازم خانگی",
     },
+    {
+      id: 5,
+      category: "بازی",
+    },
+    {
+      id: 6,
+      category: "سایر",
+    },
   ];
 
   const [showCategory, setShowCategory] = useState();
@@ -99,9 +107,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 15,
-    marginRight:5,
+    marginRight: 5,
 
-   backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   allGoodsText: {
     fontSize: 13.5,

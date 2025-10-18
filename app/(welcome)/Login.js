@@ -2,23 +2,48 @@ import { Link, useNavigation } from "expo-router";
 import React from "react";
 import {
   Alert,
+  Button,
   ImageBackground,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback,Image, Text, View 
 } from "react-native";
-import { Image, Text , View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { mainColor } from "../../components/ui/Color";
-import { FieldStyles } from "../../components/Fields/FieldStyles";
+import { FieldStyles } from "../../components/Forms/FieldStyles";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 function Login(props) {
   const navigatiuon = useNavigation();
 
-  const onSubmit = (values) => {
-    Alert.alert(JSON.stringify(values));
+  const showToast = () => {
+    ToastAndroid.show("نام کاربری یا رمزعبور اشتباه است", ToastAndroid.LONG);
   };
+
+  const onSubmit = (values) => {
+    fetch("http://194.60.231.181:9095/users/login", {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+
+      .then((data) => {
+        console.log("success", data.token);
+        AsyncStorage.setItem("jwtToken", JSON.stringify(data.token));
+        navigatiuon.navigate("(tabs)");
+      })
+      .catch((error) => {
+        showToast();
+      });
+  };
+
+
   const initialValues = {
     username: "",
     password: "",
@@ -49,9 +74,11 @@ function Login(props) {
           <View style={FieldStyles.titleContainer}>
             <Text style={FieldStyles.title}>ورود</Text>
             <Text style={{}}>به حساب خود وارد شوید .</Text>
+         
           </View>
         </ImageBackground>
       </View>
+
       <View style={FieldStyles.formContainer}>
         <Formik
           validationSchema={validationSchema}

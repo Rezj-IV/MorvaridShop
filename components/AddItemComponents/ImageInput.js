@@ -53,6 +53,7 @@ function ImageInput({ imageUri, onChangeImage }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+  
   },
 
   image: {

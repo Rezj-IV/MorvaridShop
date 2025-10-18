@@ -4,21 +4,11 @@ import ImageInputList from "../../components/AddItemComponents/ImageInputList";
 import AddItemFields from "../../components/AddItemComponents/AddItemFields";
 
 const addItem = () => {
-  // const [imageUris, setImageUris] = useState([]);
-  // const handleAdd = (uri) => {
-  //   setImageUris([...imageUris, uri]);
-  // };
-  // const handleRemove = (uri) => {
-  //   setImageUris(imageUris.filter((image) => image !== uri));
-  // };
+
   return (
     <View style={styles.addItemContainer}>
       <Text style={styles.header}>کالا جدید</Text>
-      {/* <ImageInputList
-        imageUris={imageUris}
-        addImage={handleAdd}
-        removeImage={handleRemove}
-      /> */}
+
       
       <AddItemFields />
     </View>
@@ -45,7 +35,7 @@ const styles = StyleSheet.create({
     borderBottomWidth:1,
     borderStyle:"dotted",
     borderBottomColor:"gray",
-    marginBottom:30
-    ,fontFamily:"yekan-bakh-regular"
+    fontFamily:"yekan-bakh-regular",
+    marginBottom:22
   },
 });
