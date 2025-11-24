@@ -30,9 +30,9 @@ export default function RootLayout() {
     <>
 
       <Stack screenOptions={{ headerShown: false }}>
-        
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="(welcome)" />
+
+     
+        <Stack.Screen name="(tabs)" />   <Stack.Screen name="(welcome)" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

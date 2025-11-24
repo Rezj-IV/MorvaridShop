@@ -17,7 +17,7 @@ function SignUpForm(props) {
   const navigatiuon = useNavigation();
 
   const onSubmit = (values) => {
-    fetch("http://194.60.231.181:9095/users/register", {
+    fetch("https://rjland.ir/api/users/register", {
       method: "POST",
       body: JSON.stringify(values),
       headers: {
@@ -150,6 +150,7 @@ function SignUpForm(props) {
                     style={FieldStyles.input}
                     placeholder="لطفا رمز عبور خود را تایید کنید"
                     placeholderTextColor="#ccccccff"
+                    
                     value={values.confirmPassword}
                     onChangeText={handleChange("confirmPassword")}
                   />

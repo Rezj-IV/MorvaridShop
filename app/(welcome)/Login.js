@@ -7,7 +7,10 @@ import {
   TextInput,
   ToastAndroid,
   TouchableOpacity,
-  TouchableWithoutFeedback,Image, Text, View 
+  TouchableWithoutFeedback,
+  Image,
+  Text,
+  View,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Formik } from "formik";
@@ -17,32 +20,38 @@ import { FieldStyles } from "../../components/Forms/FieldStyles";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 function Login(props) {
-  const navigatiuon = useNavigation();
+  const navigation = useNavigation();
 
   const showToast = () => {
     ToastAndroid.show("نام کاربری یا رمزعبور اشتباه است", ToastAndroid.LONG);
   };
 
-  const onSubmit = (values) => {
-    fetch("http://194.60.231.181:9095/users/login", {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-
-      .then((data) => {
-        console.log("success", data.token);
-        AsyncStorage.setItem("jwtToken", JSON.stringify(data.token));
-        navigatiuon.navigate("(tabs)");
-      })
-      .catch((error) => {
-        showToast();
-      });
+  const onSubmit = async (values) => {
+    try {
+      const response = await axios.post(
+        "https://rjland.ir/api/users/login",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      const token = await response.data.token;
+  
+      if (token) {
+        await AsyncStorage.setItem("jwtToken", token);
+        navigation.navigate("(tabs)");
+      } else {
+        console.log("No token received");
+      }
+    } catch (error) {
+      console.log("responseError", error);
+      showToast();
+    }
   };
-
+  
 
   const initialValues = {
     username: "",
@@ -74,7 +83,6 @@ function Login(props) {
           <View style={FieldStyles.titleContainer}>
             <Text style={FieldStyles.title}>ورود</Text>
             <Text style={{}}>به حساب خود وارد شوید .</Text>
-         
           </View>
         </ImageBackground>
       </View>

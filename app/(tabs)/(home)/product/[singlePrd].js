@@ -21,7 +21,7 @@ function singlePrd(props) {
 
   const getProduct = async () => {
     const response = await axios.get(
-      `http://10.158.9.23:9095/MorvaridShop/${singlePrd}`
+      `https://rjland.ir/api/MorvaridShop/${singlePrd}`
     );
     const data = await response.data;
 
@@ -32,19 +32,19 @@ function singlePrd(props) {
     getProduct();
   }, []);
   console.log("latitude", product.latitude);
-  const locate = {
-    latitude: Number(product.latitude),
-    longitude: Number(product.longitude),
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  };
-
   // const locate = {
-  //   latitude: 35.68982981668057,
-  //   longitude: 50.84257936409913,
+  //   latitude: Number(product.latitude),
+  //   longitude: Number(product.longitude),
   //   latitudeDelta: 0.0922,
   //   longitudeDelta: 0.0421,
   // };
+
+  const locate = {
+    latitude: 35.477822826900905,
+    longitude: 51.67418242427669,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -55,47 +55,49 @@ function singlePrd(props) {
             uri: product.indexImageUrl,
           }}
         />
-        <View style={{ paddingHorizontal: 15 }}>
-          <View style={styles.prdContent}>
-            <Text style={styles.name}>{product.name}</Text>
-            <View style={styles.priceContainer}>
-              <Text style={[styles.price]}>{product.price}</Text>
-              <Text style={[styles.toman]}>ت </Text>
+        <View style={{ justifyContent: "space-between", flex: 1 }}>
+          <View style={{ paddingHorizontal: 15 }}>
+            <View style={styles.prdContent}>
+              <Text style={styles.name}>{product.name}</Text>
+              <View style={styles.priceContainer}>
+                <Text style={[styles.price]}>{product.price}</Text>
+                <Text style={[styles.toman]}>ت </Text>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.userContent}>
-            <Image
-              style={styles.userImage}
-              source={{
-                uri: "https://static.vecteezy.com/system/resources/thumbnails/048/926/084/small_2x/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-illustration-vector.jpg",
-              }}
-            />
-            <Text style={styles.username}>{product.seller}</Text>
-          </View>
-
+            <View style={styles.userContent}>
+              <Image
+                style={styles.userImage}
+                source={{
+                  uri: "https://static.vecteezy.com/system/resources/thumbnails/048/926/084/small_2x/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-illustration-vector.jpg",
+                }}
+              />
+              <Text style={styles.username}>{product.seller}</Text>
+            </View>
+            {/* 
           <TextInput style={[styles.notification, styles.measurement]} placeholder="پیام شما به فروشنده"/>
            
           <TouchableOpacity onPress={{}}>
             <View style={[styles.measurement, styles.sendToSeller]}>
               <Text style={styles.sendToSellerText}>ارسال به فروشنده</Text>
             </View>
-          </TouchableOpacity>
-        </View>
-        {product && (
-          <View style={styles.locationContainer}>
-            <MapView style={StyleSheet.absoluteFill} initialRegion={locate}>
-              <Marker coordinate={locate} key={product.id}>
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=80&id=XieTOK4V0QEI&format=png",
-                  }}
-                  style={{ height: 38, width: 38 }}
-                />
-              </Marker>
-            </MapView>
+          </TouchableOpacity> */}
           </View>
-        )}
+          {product && (
+            <View style={styles.locationContainer}>
+              <MapView style={StyleSheet.absoluteFill} initialRegion={locate}>
+                <Marker coordinate={locate} key={product.id}>
+                  <Image
+                    source={{
+                      uri: "https://img.icons8.com/?size=80&id=XieTOK4V0QEI&format=png",
+                    }}
+                    style={{ height: 38, width: 38 }}
+                  />
+                </Marker>
+              </MapView>
+            </View>
+          )}
+        </View>
       </View>
     </>
   );
@@ -105,19 +107,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    justifyContent: "space-between",
     direction: "rtl",
   },
   image: {
     width: "100%",
-    height: 280,
+    height: 285,
   },
   prdContent: {
     width: "100%",
     height: 65,
+    marginTop: 14,
   },
   name: {
-    fontSize: 17,
+    fontSize: 18.5,
     fontWeight: "600",
   },
   priceContainer: {
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
     paddingTop: 1.5,
   },
   price: {
-    fontSize: 15,
+    fontSize: 16.5,
     color: mainColor,
     fontWeight: "600",
     fontFamily: "cursive",
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     fontWeight: "600",
     fontStyle: "italic",
-    fontSize: 12,
+    fontSize: 13,
     color: mainColor,
     fontFamily: "cursive",
   },
@@ -146,18 +148,18 @@ const styles = StyleSheet.create({
     marginVertical: 25,
   },
   userImage: {
-    width: 60,
-    height: 60,
+    width: 64,
+    height: 64,
     borderRadius: 50,
   },
   username: {
     paddingRight: 10,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "600",
   },
   locationContainer: {
     width: "100%",
-    height: 195,
+    height: 200,
   },
   measurement: {
     width: "100%",
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e9e9e9ff",
     marginTop: 10,
     marginBottom: 16,
-    paddingHorizontal:20
+    paddingHorizontal: 20,
   },
 
   sendToSeller: {

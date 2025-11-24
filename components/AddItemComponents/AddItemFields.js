@@ -1,7 +1,7 @@
 import Foundation from "@expo/vector-icons/Foundation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -17,22 +17,71 @@ import { mainColor } from "../ui/Color";
 import FormImagesPicker from "./FormImagesPicker";
 import CategoryModal from "./CategoryModal";
 import Lottie from "../HomeComponents/Lottie";
+import { useNavigation } from "expo-router";
+import { Image } from "expo-image";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { jwtDecode } from "jwt-decode";
 function AddItemFields(props) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [showAnimation, setshowAnimation] = useState(false);
-  
-  const showToast = () => {
-    ToastAndroid.show(" کالا شما با موفقیت ثبت شد", ToastAndroid.SHORT);
+  const [imageUrl, setImageUrl] = useState();
+
+  const navigation = useNavigation();
+  const showToast = (message) => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
-  const onSubmit = (values) => {
-    setshowAnimation(true);
-  
-    setTimeout(() => {
-      setshowAnimation(false);
-    }, 3650);
-    showToast();
-    
+  // const [seller, setSeller] = useState();
+
+  // const getToken = async () => {
+  //   const jwt = await AsyncStorage.getItem("jwtToken");
+  //   if (jwt) {
+  //     setSeller(jwtDecode(jwt).username);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getToken();
+  // }, [seller]);
+
+  // console.log("seller77", seller);
+
+  const onSubmit = async (values) => {
+    console.log("values", values);
+    const jwt = await AsyncStorage.getItem("jwtToken");
+    console.log("username",jwtDecode(jwt).username);
+    const requestBody = new FormData();
+    const image = values.images[0][0];
+
+    requestBody.append("name", values.name);
+    requestBody.append("price", values.price);
+    requestBody.append("category", values.category);
+
+    requestBody.append("seller", jwtDecode(jwt).username);
+
+    requestBody.append("image", {
+      uri: image.uri,
+      type: image.mimeType || "image/jpeg",
+      name: image.fileName || "photo.jpg",
+    });
+
+    try {
+      setshowAnimation(true);
+      setTimeout(() => {
+        setshowAnimation(false);
+        navigation.navigate("(home)");
+      }, 3650);
+      console.log("try....");
+      const response = await fetch("https://rjland.ir/api/MorvaridShop", {
+        method: "post",
+        body: requestBody,
+      });
+      const result = await response.json();
+      console.log("result", result);
+      showToast(" کالا شما با موفقیت ثبت شد");
+    } catch (error) {
+      console.log("errorXX", error);
+      showToast("سرور در حال حاضر در دسترس نمی باشد");
+    }
   };
 
   const initialValues = {
@@ -125,6 +174,7 @@ function AddItemFields(props) {
           </View>
         )}
       </Formik>
+
       <Modal visible={showAnimation}>
         <Lottie />
       </Modal>

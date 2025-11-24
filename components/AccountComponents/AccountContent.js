@@ -23,12 +23,12 @@ export default function AccountContent() {
       image: "https://img.icons8.com/?size=48&id=80613&format=png",
       name: "لیست کالا های من",
     },
-    {
-      id: 2,
-      link: "myMessages",
-      image: "https://img.icons8.com/?size=48&id=80317&format=png",
-      name: "پیام های من",
-    },
+    // {
+    //   id: 2,
+    //   link: "myMessages",
+    //   image: "https://img.icons8.com/?size=48&id=80317&format=png",
+    //   name: "پیام های من",
+    // },
   ];
   const LogOut = () => {
     Alert.alert("خروج از حساب", "آیا مطمئنی که میخوای از حساب خارج شوید.", [

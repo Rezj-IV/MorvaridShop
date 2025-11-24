@@ -8,7 +8,7 @@ const Products = ({ Category }) => {
 
   const navigation = useNavigation();
   const getProducts = async () => {
-    const response = await axios.get(`http://10.158.9.23:9095/MorvaridShop`);
+    const response = await axios.get(`https://rjland.ir/api/MorvaridShop`);
     const data = await response.data;
     setProducts(data);
   };

@@ -8,7 +8,7 @@ function myListings(props) {
   const [sellersGoods, setSellersGoods] = useState([]);
   const getProducts = async () => {
     const response = await axios.get(
-      `http://10.158.9.23:9095/MorvaridShop/seller/${params.seller}`
+      `http://192.168.1.3:9095/MorvaridShop/seller/${params.seller}`
     );
     const data = await response.data;
     setSellersGoods(data);

@@ -1,22 +1,28 @@
 {
   "expo": {
-    "name": "Rj-Shop",
-    "slug": "Rj-Shop",
+    "name": "Morvaird Shop",
+    "slug": "morvairdshop",
+    "owner": "rezj",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "rjshop",
+    "icon": "./assets/images/pearl.jpg",
+    "scheme": "morvairdshop",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
+      "package": "com.rezj.morvairdshop",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.rezj.morvairdshop",
+      "supportsTablet": true
     },
     "web": {
       "bundler": "metro",
@@ -44,6 +50,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cd1a58d2-4747-4237-a8aa-de0759c9e126"
+      }
     }
   }
 }
